@@ -39,6 +39,10 @@ Unavailable evidence deterministically forces `INCONCLUSIVE`.
 - Agents can submit later evidence revisions without overwriting earlier certificates.
 - Consumers use `is_certified_success(claim_id, revision)` as an on-chain gate.
 
+Two live 4×4 outcome matrices (software delivery and package-release integrity)
+are documented with all template, claim, certificate, and immutable evidence
+links in [PROOF_MATRICES.md](PROOF_MATRICES.md).
+
 ## Validation
 
 ```bash

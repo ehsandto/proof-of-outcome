@@ -7,7 +7,7 @@ const commit = process.env.EVIDENCE_COMMIT;
 if (!commit) throw new Error("Set EVIDENCE_COMMIT to the public Git commit containing evidence.");
 const account = createAccount();
 const client = createClient({ chain: studionet, account });
-const suffix = Date.now();
+const suffix = Number(process.env.PROOF_SUFFIX ?? Date.now());
 const rawBase = `https://raw.githubusercontent.com/ehsandto/proof-of-outcome/${commit}/evidence`;
 
 const matrices = [
@@ -61,14 +61,22 @@ async function write(functionName: string, args: any[]) {
     status: receipt.status_name, consensus: receipt.result_name };
 }
 
+const selected = process.env.MATRIX_ONLY
+  ? matrices.filter((matrix) => matrix.label === process.env.MATRIX_ONLY)
+  : matrices;
+if (!selected.length) throw new Error("MATRIX_ONLY did not match a matrix.");
 const proofs: unknown[] = [];
-for (const matrix of matrices) {
+for (const matrix of selected) {
   const templateId = `${matrix.label}-template-${suffix}`;
   const claimId = `${matrix.label}-claim-${suffix}`;
-  const templateTx = await write("create_template", [templateId, matrix.title, matrix.objective,
-    JSON.stringify(matrix.criteria), matrix.policy]);
-  const claimTx = await write("submit_claim", [claimId, templateId, matrix.reference,
-    matrix.expected, JSON.stringify(matrix.urls)]);
+  const templateTx = process.env.RESUME_TEMPLATE === "1"
+    ? { resumedFromFinalizedTemplate: true }
+    : await write("create_template", [templateId, matrix.title, matrix.objective,
+      JSON.stringify(matrix.criteria), matrix.policy]);
+  const claimTx = process.env.RESUME_CLAIM === "1"
+    ? { resumedFromFinalizedClaim: true }
+    : await write("submit_claim", [claimId, templateId, matrix.reference,
+      matrix.expected, JSON.stringify(matrix.urls)]);
   const verifyTx = await write("verify_claim", [claimId]);
   const certificate = await client.readContract({ address, functionName: "get_certificate", args: [claimId, 1] });
   proofs.push({ label: matrix.label, dimensions: "4 criteria x 4 sources", templateId, claimId,
