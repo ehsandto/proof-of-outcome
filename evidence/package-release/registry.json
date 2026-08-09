@@ -1,0 +1,9 @@
+{
+  "matrix": "package-release-v1",
+  "source": "package-registry",
+  "package": "proof-matrix-demo",
+  "version": "4.2.0",
+  "published": true,
+  "artifact_digest": "sha256:matrix-demo-420",
+  "result": "PASS"
+}

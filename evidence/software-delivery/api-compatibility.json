@@ -1,0 +1,9 @@
+{
+  "matrix": "software-delivery-v1",
+  "source": "api-diff",
+  "commit": "def456",
+  "removed_public_operations": 0,
+  "renamed_public_operations": 0,
+  "breaking_change": false,
+  "result": "PASS"
+}

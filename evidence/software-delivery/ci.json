@@ -1,0 +1,9 @@
+{
+  "matrix": "software-delivery-v1",
+  "source": "continuous-integration",
+  "commit": "def456",
+  "required_tests": 184,
+  "passed_tests": 184,
+  "failed_tests": 0,
+  "result": "PASS"
+}

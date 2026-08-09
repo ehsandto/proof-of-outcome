@@ -1,0 +1,10 @@
+{
+  "matrix": "software-delivery-v1",
+  "source": "security-scan",
+  "commit": "def456",
+  "critical_vulnerabilities_before": 0,
+  "critical_vulnerabilities_after": 0,
+  "high_vulnerabilities_before": 0,
+  "high_vulnerabilities_after": 0,
+  "result": "PASS"
+}

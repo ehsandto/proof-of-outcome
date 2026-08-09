@@ -1,0 +1,8 @@
+{
+  "matrix": "package-release-v1",
+  "source": "license-audit",
+  "declared_license": "MIT",
+  "allowed_licenses": ["MIT", "APACHE-2.0"],
+  "license_allowed": true,
+  "result": "PASS"
+}

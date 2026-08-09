@@ -1,0 +1,9 @@
+{
+  "matrix": "software-delivery-v1",
+  "source": "documentation-audit",
+  "commit": "def456",
+  "changelog_updated": true,
+  "migration_notes_required": false,
+  "public_docs_updated": true,
+  "result": "PASS"
+}

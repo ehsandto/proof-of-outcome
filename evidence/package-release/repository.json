@@ -1,0 +1,8 @@
+{
+  "matrix": "package-release-v1",
+  "source": "source-repository",
+  "release_tag": "v4.2.0",
+  "tag_matches_manifest": true,
+  "release_commit_signed": true,
+  "result": "PASS"
+}

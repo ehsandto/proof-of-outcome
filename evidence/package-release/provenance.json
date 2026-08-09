@@ -1,0 +1,8 @@
+{
+  "matrix": "package-release-v1",
+  "source": "build-provenance",
+  "artifact_digest": "sha256:matrix-demo-420",
+  "registry_digest_matches": true,
+  "builder_identity_verified": true,
+  "result": "PASS"
+}

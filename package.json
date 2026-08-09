@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "deploy:studionet": "tsx scripts/deploy-studionet.ts",
+    "prove:matrices": "tsx scripts/prove-matrices-studionet.ts",
     "verify:deployment": "tsx scripts/verify-deployment.ts",
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
