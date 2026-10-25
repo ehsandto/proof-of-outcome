@@ -3,3 +3,7 @@ node_modules/
 __pycache__/
 .pytest_cache/
 artifacts/
+.env
+.env.*
+*.key
+*.pem

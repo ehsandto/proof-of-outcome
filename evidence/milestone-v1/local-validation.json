@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-25T11:32:57.112Z",
+  "baseline": "c65c0a5819b0d7a6ce0830595be0be4d5c4c35f3",
+  "tests": 80,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "sourceSha256": {
+    "registry": "2f8b95deb41432c8e02e8da4ffd5b8aad9e4344eec0f04d6e43423cb60165e71",
+    "escrow": "82aa7f80d0b4676d5864e9c3b22e16e574921c81465df7934bc0b33f1428c3da"
+  },
+  "junitSha256": "9dcbd0717908568112fbe3d3e3ba5edc811a6279e052abacec627a42b49d4798",
+  "scope": "Local actual-source registry/escrow execution in genlayer-test/glsim. Web, LLM and external EVM transport mocked. No live consensus or payout delivery inferred."
+}

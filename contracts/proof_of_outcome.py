@@ -2,6 +2,7 @@
 from genlayer import *
 from dataclasses import dataclass
 import json
+import hashlib
 
 
 MAX_ID = 96
@@ -294,18 +295,25 @@ class ProofOfOutcome(gl.Contract):
             status = int(getattr(response, "status_code", getattr(response, "status", 200)))
             if status >= 500:
                 raise gl.vm.UserError("TRANSIENT: evidence source unavailable")
-            body = response.body.decode("utf-8", errors="ignore")
-            if len(body) > MAX_EVIDENCE_BODY:
-                body = body[:MAX_EVIDENCE_BODY]
-            status_class = "OK" if status >= 200 and status < 300 and len(body.strip()) > 0 else "UNAVAILABLE"
+            raw_body = response.body
+            try:
+                body = raw_body.decode("utf-8")
+                complete = len(raw_body) <= MAX_EVIDENCE_BODY
+            except UnicodeError:
+                body = ""
+                complete = False
+            status_class = "OK" if 200 <= status < 300 and complete and body.strip() else "UNAVAILABLE"
             statuses.append(status_class)
-            compact = " ".join(body.strip().split())
-            fingerprint_parts.append(f"{index}:{status}:{len(compact)}:{compact[:48]}:{compact[-48:]}")
+            # Commit the URL, HTTP status and every response byte. A same-length
+            # change in the middle must not collide with the old edge summary.
+            fingerprint_parts.append([url, status, hashlib.sha256(raw_body).hexdigest()])
+            if not complete:
+                body = "[UNAVAILABLE: evidence is oversized or invalid UTF-8; no prefix was assessed]"
             pieces.append(f"SOURCE {index + 1} URL {url} STATUS {status}\n{body}")
         return {
             "count": len(urls),
             "statuses_json": json.dumps(statuses, separators=(",", ":")),
-            "fingerprint": "||".join(fingerprint_parts),
+            "fingerprint": hashlib.sha256(json.dumps(fingerprint_parts, separators=(",", ":")).encode()).hexdigest(),
             "combined_text": "\n\n".join(pieces),
         }
 

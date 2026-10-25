@@ -24,7 +24,23 @@ The outcome is derived by contract code from criterion and source results. No
 free-form explanation is stored, compared loosely, or reused in future decisions.
 Unavailable evidence deterministically forces `INCONCLUSIVE`.
 
-## StudioNet deployment
+## Milestone v1: staged AgentEscrow agreements
+
+The new [AgentEscrow contract](contracts/agent_escrow.py) consumes finalized
+ProofOfOutcome certificates to release staged native-GEN withdrawal credits.
+Clients fund immutable acceptance terms; assigned providers accept them and bind
+evidence revisions before deadlines. Failed, inconclusive, stale-revision and
+replayed certificates cannot release a stage. Expiry returns only unearned funds.
+
+Evidence fingerprints now use SHA-256 over full response bytes, URLs and status
+codes. Oversized or invalid UTF-8 evidence is unavailable, never silently truncated.
+
+See [MILESTONE_V1.md](MILESTONE_V1.md) for the baseline, trust model, exact review
+path, test scope and deployment evidence. Studio balances are simulated;
+external EVM payout delivery is a separate transaction and is not claimed by a
+withdrawal credit or an emitted payout request.
+
+## Historical StudioNet deployment (pre-milestone source)
 
 - Contract: [`0x8175264B473186ed62C6d9c48b7F3C2598543E78`](https://explorer-studio.genlayer.com/address/0x8175264B473186ed62C6d9c48b7F3C2598543E78)
 - Deployment: [`0x535585...21e47`](https://explorer-studio.genlayer.com/tx/0x535585e8106bbb30eb7823b8871f20360c86ef7af9618385ccb76e082ba21e47)
@@ -47,8 +63,10 @@ links in [PROOF_MATRICES.md](PROOF_MATRICES.md).
 
 ```bash
 genvm-lint check contracts/proof_of_outcome.py --json
+genvm-lint check contracts/agent_escrow.py --json
 pytest tests/direct -q
 python tools/static_checks.py
-npm install
+npm ci
 npm run typecheck
+npm run demo:escrow
 ```

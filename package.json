@@ -1,15 +1,20 @@
 {
   "name": "proof-of-outcome",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "deploy:studionet": "tsx scripts/deploy-studionet.ts",
     "prove:matrices": "tsx scripts/prove-matrices-studionet.ts",
     "verify:deployment": "tsx scripts/verify-deployment.ts",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "demo:escrow": "tsx scripts/escrow-demo.ts",
+    "verify:escrow": "tsx scripts/verify-escrow.ts"
   },
-  "dependencies": { "genlayer-js": "1.1.8" },
+  "dependencies": {
+    "genlayer-js": "1.1.8",
+    "genlayer-js-next": "npm:genlayer-js@2.0.0-rc.1"
+  },
   "devDependencies": {
     "@types/node": "25.9.3",
     "tsx": "4.19.2",

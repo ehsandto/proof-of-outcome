@@ -1,0 +1,6 @@
+{
+  "kind": "synthetic acceptance fixture; not a claim of real customer work",
+  "scenario": "An agent delivered a small software report. Every required check passed, with zero failing checks. The delivered report includes exact reproduction steps and a section explaining known limitations.",
+  "required_checks": {"passed": 12, "failed": 0},
+  "report_sections": ["reproduction steps", "limitations"]
+}

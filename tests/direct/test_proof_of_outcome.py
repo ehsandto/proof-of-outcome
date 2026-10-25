@@ -1,4 +1,5 @@
 import json
+import pytest
 
 
 CONTRACT = "contracts/proof_of_outcome.py"
@@ -64,6 +65,7 @@ def test_success_certificate_binds_all_evidence_fields(direct_vm, direct_deploy)
     assert cert.confidence_bucket == "HIGH"
     assert not hasattr(cert, "explanation")
     assert contract.is_certified_success("upgrade-123", 1) is True
+    assert direct_vm.run_validator() is True
 
 
 def test_validator_rejects_conflicting_criterion(direct_vm, direct_deploy):
@@ -116,3 +118,46 @@ def test_access_control_and_input_validation(direct_vm, direct_deploy, direct_bo
             contract.set_template_active("software-upgrade-v1", False)
     with direct_vm.expect_revert("EXPECTED: evidence URLs must use https"):
         contract.submit_claim("bad", "software-upgrade-v1", "x", "y", '["http://localhost/private"]')
+
+
+def test_full_body_hash_rejects_same_edges_different_middle_in_validator(direct_vm, direct_deploy):
+    mock_success(direct_vm)
+    first = "A" * 60 + "tests passed" + "Z" * 60
+    second = "A" * 60 + "tests failed" + "Z" * 60
+    direct_vm.clear_mocks()
+    direct_vm.mock_web(r"example\.com/ci", {"status": 200, "body": first})
+    direct_vm.mock_web(r"example\.com/diff", {"status": 200, "body": "Stable API"})
+    direct_vm.mock_llm(r"independently verifying", passing_report())
+    contract = direct_deploy(CONTRACT)
+    create_template(contract)
+    submit_claim(contract)
+    contract.verify_claim("upgrade-123")
+    assert len(contract.get_certificate("upgrade-123", 1).evidence_fingerprint) == 64
+    direct_vm.clear_mocks()
+    direct_vm.mock_web(r"example\.com/ci", {"status": 200, "body": second})
+    direct_vm.mock_web(r"example\.com/diff", {"status": 200, "body": "Stable API"})
+    direct_vm.mock_llm(r"independently verifying", passing_report())
+    assert direct_vm.run_validator() is False
+
+
+@pytest.mark.parametrize("body", ["a" * 12001, "é" * 6001, b"\xff\xfe", " "])
+def test_incomplete_or_invalid_evidence_forces_inconclusive(direct_vm, direct_deploy, body):
+    direct_vm.mock_web(r"example\.com/ci", {"status": 200, "body": body})
+    direct_vm.mock_web(r"example\.com/diff", {"status": 200, "body": "Stable API"})
+    direct_vm.mock_llm(r"independently verifying", passing_report())
+    contract = direct_deploy(CONTRACT)
+    create_template(contract)
+    submit_claim(contract)
+    contract.verify_claim("upgrade-123")
+    assert contract.get_certificate("upgrade-123", 1).outcome == "INCONCLUSIVE"
+
+
+def test_exact_evidence_byte_limit_is_accepted(direct_vm, direct_deploy):
+    direct_vm.mock_web(r"example\.com/ci", {"status": 200, "body": "a" * 12000})
+    direct_vm.mock_web(r"example\.com/diff", {"status": 200, "body": "Stable API"})
+    direct_vm.mock_llm(r"independently verifying", passing_report())
+    contract = direct_deploy(CONTRACT)
+    create_template(contract)
+    submit_claim(contract)
+    contract.verify_claim("upgrade-123")
+    assert contract.get_certificate("upgrade-123", 1).outcome == "SUCCESS"
