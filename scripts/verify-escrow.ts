@@ -17,7 +17,7 @@ for (const name of ["registry", "escrow"] as const) {
   const address = manifest[name] as `0x${string}`;
   assert.match(address, /^0x[0-9a-fA-F]{40}$/);
   const local = await fs.readFile(`contracts/${name === "registry" ? "proof_of_outcome" : "agent_escrow"}.py`, "utf8");
-  assert.equal(sha(local), manifest.sourceSha256[name], "Manifest differs from checked-out source");
+  assert.equal(sha(local.replace(/\r\n/g, "\n")), manifest.sourceSha256[name], "Manifest differs from checked-out source");
   assert.equal(sha(await client.getContractCode(address)), manifest.sourceSha256[name], "Onchain source differs");
 }
 for (const [name, item] of Object.entries(manifest.transactions) as [string, any][]) {

@@ -9,7 +9,7 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-require(SOURCE.startswith('# { "Depends": "py-genlayer:'), "runner must be pinned")
+require(SOURCE.startswith('# v0.2.0\n# { "Depends": "py-genlayer:'), "format and runner must be pinned")
 require("run_nondet_unsafe" in SOURCE, "custom validator is required")
 require("_reports_identical" in SOURCE, "substantive exact comparison is required")
 for field in (

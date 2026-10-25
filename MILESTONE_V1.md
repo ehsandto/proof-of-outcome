@@ -87,7 +87,7 @@ npm run demo:escrow -- --write-demo
 
 The explicit write demo uses fresh in-memory keys and the Studio faucet, never
 a user's funded wallet. It checks chain 61997, deploys both contracts, compares
-onchain source hashes, uses immutable commit URLs and waits for finalized
+onchain source hashes (UTF-8 with LF line endings), uses immutable commit URLs and waits for finalized
 MAJORITY_AGREE with successful execution. Negative transactions must finalize
 with the specific expected error. A journal saves submitted hashes before
 polling; an ambiguous timeout never resubmits them. Do not blindly rerun after

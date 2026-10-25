@@ -7,8 +7,8 @@ import { studioDevnet } from "genlayer-js-next/chains";
 import { TransactionHashVariant } from "genlayer-js-next/types";
 
 const source = {
-  registry: await fs.readFile("contracts/proof_of_outcome.py", "utf8"),
-  escrow: await fs.readFile("contracts/agent_escrow.py", "utf8"),
+  registry: (await fs.readFile("contracts/proof_of_outcome.py", "utf8")).replace(/\r\n/g, "\n"),
+  escrow: (await fs.readFile("contracts/agent_escrow.py", "utf8")).replace(/\r\n/g, "\n"),
 };
 const sha = (text: string) => createHash("sha256").update(text).digest("hex");
 const sourceSha256 = { registry: sha(source.registry), escrow: sha(source.escrow) };
@@ -34,7 +34,7 @@ assert.equal(Number(await client.getChainId()), 61997);
 for (const account of [clientAccount, providerAccount, keeperAccount]) {
   await client.request({ method: "sim_fundAccount" as never, params: [account.address, 10_000_000_000_000_000_000] as never });
 }
-const journal: any = { chainId: 61997, evidenceCommit: commit, sourceSha256,
+const journal: any = { chainId: 61997, evidenceCommit: commit, sourceSha256, sourceEncoding: "UTF-8 LF",
   client: clientAccount.address, provider: providerAccount.address, keeper: keeperAccount.address,
   transactions: {}, scope: "Synthetic demo evidence and Studio simulated balances. No external EVM payout or real agent delivery claimed." };
 await save("journal", journal);

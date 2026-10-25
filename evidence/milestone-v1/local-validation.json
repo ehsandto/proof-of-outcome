@@ -1,14 +1,15 @@
 {
-  "checkedAt": "2026-10-25T11:32:57.112Z",
+  "checkedAt": "2026-10-25T11:37:32.138Z",
   "baseline": "c65c0a5819b0d7a6ce0830595be0be4d5c4c35f3",
   "tests": 80,
   "failures": 0,
   "errors": 0,
   "skipped": 0,
   "sourceSha256": {
-    "registry": "2f8b95deb41432c8e02e8da4ffd5b8aad9e4344eec0f04d6e43423cb60165e71",
-    "escrow": "82aa7f80d0b4676d5864e9c3b22e16e574921c81465df7934bc0b33f1428c3da"
+    "registry": "53c3c198c128f24ba03bb8bcecdbd5666999b7df29307e4d69047ef4a2d0da2a",
+    "escrow": "78ea9e18b6463b865fcb16cd21d4bd62f9e936c17908e968b94df63a9580b94f"
   },
-  "junitSha256": "9dcbd0717908568112fbe3d3e3ba5edc811a6279e052abacec627a42b49d4798",
-  "scope": "Local actual-source registry/escrow execution in genlayer-test/glsim. Web, LLM and external EVM transport mocked. No live consensus or payout delivery inferred."
+  "junitSha256": "8e6cb2c41701f2e4adad5d8e49f92e8dde5632e4092963e026856cb96fbff654",
+  "scope": "Local actual-source registry/escrow execution in genlayer-test/glsim. Web, LLM and external EVM transport mocked. No live consensus or payout delivery inferred.",
+  "sourceEncoding": "UTF-8 LF"
 }
