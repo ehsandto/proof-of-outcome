@@ -1,5 +1,27 @@
 # Milestone v1 — Staged escrow with finalized proof gates
 
+## Public verification status — October 25, 2026
+
+Both new contracts deployed successfully on Studio Next (chain 61997), with
+FINALIZED / MAJORITY_AGREE / FINISHED_WITH_RETURN receipts and matching source.
+The policy creation also finalized successfully. The subsequent funding
+transaction remained PROPOSING while the hosted `gen_call` RPC returned an
+internal database `NumericValueOutOfRange` / rolled-back-session error. The demo
+was stopped, and no live settlement, replay rejection or cancellation is claimed.
+This hosted-service failure cannot be repaired in this repository.
+
+See [the deployment manifest](deployments/escrow-studio-next.json) for addresses,
+source hashes, transaction hashes and the observed funding status. Independently
+verify only the completed deployment scope with:
+
+```sh
+npm run verify:escrow -- deployments/escrow-studio-next.json --deployments-only
+```
+
+The full live demo remains a reproducible command for when the RPC is healthy.
+Local verification passed all **80 tests**; the
+[test report](evidence/milestone-v1/local-validation.json) states its mock scope.
+
 Baseline: [`c65c0a5`](https://github.com/ehsandto/proof-of-outcome/commit/c65c0a5819b0d7a6ce0830595be0be4d5c4c35f3).
 The baseline supplied outcome certificates and a boolean success view. It did
 not contain funded agreements, stage budgets, provider acceptance, payment
